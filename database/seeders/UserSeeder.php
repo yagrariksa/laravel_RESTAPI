@@ -16,13 +16,23 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $string = Str::random(10);
-        $token = Str::random(80);
-        User::create([
-            'name' => $string,
-            'email' => $string,
-            'password' => Hash::make($string),
-            'api_token' => $token,
-        ]);
+        $data = User::find(1);
+        if ($data) {
+            $string = Str::random(10);
+            $token = Str::random(80);
+            User::create([
+                'name' => $string,
+                'email' => $string,
+                'password' => Hash::make($string),
+                'api_token' => $token,
+            ]);
+        }else{
+            User::create([
+                'name' => 'admin',
+                'email' => 'admin@admin.com',
+                'password' => Hash::make('admin123'),
+                'api_token' => Str::random(80),
+            ]);
+        }
     }
 }
