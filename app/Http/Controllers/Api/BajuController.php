@@ -21,14 +21,16 @@ class BajuController extends Controller
         if (sizeof($data) == 0) {
             return response()->json([
                 'message'   => 'data not found',
-                'data'      => [],
+                'body'      => null,
             ], 404);
         }
 
         return response()->json([
             'message'   => 'Success GET all buku data',
-            'size'      => sizeof($data),
-            'data'      => BajuResource::collection($data),
+            'body'      => [
+                'size'      => sizeof($data),
+                'data'      => BajuResource::collection($data),
+            ]
         ], 200);
     }
 
@@ -42,7 +44,8 @@ class BajuController extends Controller
     {
         if (!$request->name | !$request->price) {
             return response()->json([
-                'message'   => 'name and price are required'
+                'message'   => 'name and price are required',
+                'body'      => null,
             ], 409);
         }
 
@@ -60,8 +63,10 @@ class BajuController extends Controller
         }
 
         return response()->json([
-            'message' => 'Success created data',
-            'data'    => new BajuResource($data),
+            'message'   => 'Success created data',
+            'body'      => [
+                'data'      => new BajuResource($data),
+            ],
         ], 201);
     }
 
@@ -78,13 +83,15 @@ class BajuController extends Controller
         if (!$data) {
             return response()->json([
                 'message'   => 'data not found',
-                'data'      => null,
+                'body'      => null,
             ], 404);
         }
 
         return response()->json([
             'message'   => 'success',
-            'data'      => new BajuResource($data),
+            'body'      => [
+                'data'      => new BajuResource($data),
+            ]
         ], 200);
     }
 
@@ -102,7 +109,7 @@ class BajuController extends Controller
         if (!$data) {
             return response()->json([
                 'message'   => 'data not found',
-                'data'      => null,
+                'body'      => null
             ], 404);
         }
 
@@ -125,7 +132,9 @@ class BajuController extends Controller
 
         return response()->json([
             'message'   => 'Success Update Data',
-            'data'      => new BajuResource($data),
+            'body'      => [
+                'data'      => new BajuResource($data),
+            ]
         ], 201);
     }
 
@@ -142,7 +151,7 @@ class BajuController extends Controller
         if (!$data) {
             return response()->json([
                 'message'   => 'data not found',
-                'data'      => null,
+                'body'      => null,
             ], 404);
         }
 
@@ -150,6 +159,7 @@ class BajuController extends Controller
 
         return response()->json([
             'message'   => 'Success Delete Data',
+            'body'      => null,
         ], 202);
     }
 }

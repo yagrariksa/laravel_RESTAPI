@@ -101,14 +101,16 @@ class GeneralController extends Controller
     {
         if (!$request->email || !$request->password) {
             return response()->json([
-                'message'   => 'Email and Password are required'
+                'message'   => 'Email and Password are required',
+                'body'      => null,
             ], 409);
         }
 
         $data = User::where('email', $request->email)->first();
         if (!$data) {
             return response()->json([
-                'message'   => 'your email or password is wrong'
+                'message'   => 'your email or password is wrong',
+                'body'      => null,
             ], 409);
         }
 
@@ -118,13 +120,16 @@ class GeneralController extends Controller
 
             return response()->json([
                 'message'   => 'Success Login',
-                'token'     => $data['api_token'],
-                'user'      => $data
+                'body'      => [
+                    'token'     => $data['api_token'],
+                    'user'      => $data
+                ],
             ], 200);
         }
 
         return response()->json([
-            'message'   => 'your email or password is wrong'
+            'message'   => 'your email or password is wrong',
+            'body'      => null,
         ], 409);
     }
 
@@ -132,13 +137,15 @@ class GeneralController extends Controller
     {
         if (!$request->name || !$request->email || !$request->password) {
             return response()->json([
-                'message'   => 'Name, Email, and Password are required'
+                'message'   => 'Name, Email, and Password are required',
+                'body'      => null,
             ], 409);
         }
         $check = User::where('email', $request->email)->first();
         if ($check) {
             return response()->json([
-                'message'   => 'Email already used'
+                'message'   => 'Email already used',
+                'body'      => null,
             ], 409);
         }
         $data = User::create([
@@ -150,8 +157,10 @@ class GeneralController extends Controller
 
         return response()->json([
             'message'   => 'Success register new user',
-            'token'     => $data['api_token'],
-            'user'      => $data
+            'body'      => [
+                'token'     => $data['api_token'],
+                'user'      => $data
+            ],
         ], 200);
     }
 }

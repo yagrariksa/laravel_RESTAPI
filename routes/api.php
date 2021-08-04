@@ -20,15 +20,19 @@ Route::get('/', [GeneralController::class, 'index'])->name('api.index');
 Route::post('/login', [GeneralController::class, 'login'])->name('api.login');
 Route::post('/signup', [GeneralController::class, 'signup'])->name('api.signup');
 
-Route::get('/token', function(){
+Route::get('/token', function () {
     $data = User::whereNotNull('api_token')->first();
     if (!$data) {
         return response()->json([
-            'message' => 'there is no data, please do db:seeder using artisan on your terminal'
+            'message'   => 'there is no data, please contact the developer',
+            'body'      => null
         ], 404);
     }
     return response()->json([
-        'token' => $data['api_token']
+        'message'   => 'Success get one token',
+        'body'      => [
+            'token'     => $data['api_token']
+        ]
     ], 200);
 })->name('get.token');
 
