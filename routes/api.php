@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\BajuController;
 use App\Http\Controllers\Api\GeneralController;
+use App\Http\Controllers\Api\HistoryController;
+use App\Http\Controllers\Api\StoreController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -16,38 +18,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GeneralController::class, 'index'])->name('api.index');
-Route::post('/login', [GeneralController::class, 'login'])->name('api.login');
-Route::post('/signup', [GeneralController::class, 'signup'])->name('api.signup');
-
-Route::get('/token', function () {
-    $data = User::whereNotNull('api_token')->first();
-    if (!$data) {
-        return response()->json([
-            'message'   => 'there is no data, please contact the developer',
-            'body'      => null
-        ], 404);
-    }
-    return response()->json([
-        'message'   => 'Success get one token',
-        'body'      => [
-            'token'     => $data['api_token']
-        ]
-    ], 200);
-})->name('get.token');
-
-Route::prefix('/public')->group(function () {
-    Route::get('/', [BajuController::class, 'index'])->name('public.baju.index');
-    Route::post('/', [BajuController::class, 'store'])->name('public.baju.store');
-    Route::get('/{id}', [BajuController::class, 'show'])->name('public.baju.details');
-    Route::post('/{id}', [BajuController::class, 'update'])->name('public.baju.update');
-    Route::delete('/{id}', [BajuController::class, 'destroy'])->name('public.baju.delete');
+Route::prefix('/store')->group(function() {
+    Route::get('/', [StoreController::class, 'index'])->name('store.index');
+    Route::get('/find', [StoreController::class, 'find'])->name('store.find');
+    Route::get('/coordinate', [StoreController::class, 'coordinate'])->name('store.find.coordinate');
+    Route::get('/one/{id}',[StoreController::class, 'findOne'])->name('store.find.one');
 });
 
-Route::prefix('/private')->middleware('auth:api')->group(function () {
-    Route::get('/', [BajuController::class, 'index'])->name('private.baju.index');
-    Route::post('/', [BajuController::class, 'store'])->name('private.baju.store');
-    Route::get('/{id}', [BajuController::class, 'show'])->name('private.baju.details');
-    Route::post('/{id}', [BajuController::class, 'update'])->name('private.baju.update');
-    Route::delete('/{id}', [BajuController::class, 'destroy'])->name('private.baju.delete');
+Route::prefix('/history')->group(function() {
+    Route::get('/get/{id}', [HistoryController::class, 'getHistory'])->name('history.get');
+    Route::post('/get/{id}', [HistoryController::class, 'visit'])->name('history.visit');
 });
