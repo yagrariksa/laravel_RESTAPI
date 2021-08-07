@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BajuController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return 'test';
-})->name('home');
+Route::get('/', [StoreController::class, 'index'])->name('store.index');
+Route::post('/', [StoreController::class, 'store'])->name('store.store');
