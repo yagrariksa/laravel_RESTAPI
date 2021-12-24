@@ -42,7 +42,7 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() | strpos($request->getRequestUri(),'api')) {
             return response()->json([
                 'message' => 'anda tidak memiliki akses'
             ], 401);

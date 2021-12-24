@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BajuResource;
-use App\Models\Baju;
+use App\Http\Resources\ProdukResource;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -16,7 +16,7 @@ class TestController extends Controller
      */
     public function index()
     {
-        $data = Baju::get();
+        $data = Produk::get();
         
 
         if (sizeof($data) == 0) {
@@ -27,11 +27,11 @@ class TestController extends Controller
         }
 
         foreach($data as $d){
-            $d['details'] = route('baju.details', $d->id);
+            $d['details'] = route('produk.details', $d->id);
         }
         return response()->json([
             'message'   => 'success',
-            'data'      => BajuResource::collection($data),
+            'data'      => ProdukResource::collection($data),
         ], 200);
     }
 
@@ -57,7 +57,7 @@ class TestController extends Controller
      */
     public function show($id)
     {
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if(!$data) {
             return response()->json([
@@ -68,7 +68,7 @@ class TestController extends Controller
 
         return response()->json([
             'message'   => 'success',
-            'data'      => new BajuResource($data),
+            'data'      => new ProdukResource($data),
         ], 200);
     }
 

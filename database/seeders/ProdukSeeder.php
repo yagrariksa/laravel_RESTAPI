@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Baju;
+use App\Models\Produk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class BajuSeeder extends Seeder
+class ProdukSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,8 @@ class BajuSeeder extends Seeder
      */
     public function run()
     {
-        Baju::create([
-            'name' => 'Baju ' . Str::random(5),
+        Produk::create([
+            'name' => 'Produk ' . Str::random(5),
             'price' => 100
         ]);
     }

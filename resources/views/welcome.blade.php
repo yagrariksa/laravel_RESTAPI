@@ -31,12 +31,13 @@
 
 <body>
     <div class="container my-4">
-        <span class="display-3" style="text-center">Yagrariksa</span>
+        <span class="display-3" style="text-center">Locatopia</span>
         <span class="text-muted mt-2" style="text-center">Website Originally Build by Daffa Yagrariksa</span>
         <hr>
         <div class="card-pack">
+            <a href="{{ route('umkm.index') }}" class="btn btn-outline-dark">List UMKM</a>
             @auth
-                <a href="{{ route('baju.index') }}" class="btn btn-outline-info">List Baju</a>
+                <a href="{{ route('produk.index') }}" class="btn btn-outline-info">List Produk</a>
                 <a href="{{ route('logout') }}" class="btn btn-outline-danger">Log Out</a>
             @else
                 <a href="{{ route('login') }}" class="btn btn-outline-primary">Log In</a>
@@ -104,48 +105,48 @@
                     <div class="card-body">
                         <h5 class="card-title">List Data
                             <span class="badge badge-success">GET</span>
-                            <span class="badge badge-secondary text-monospace">/baju</span>
+                            <span class="badge badge-secondary text-monospace">/produk</span>
                         </h5>
-                        <p class="card-text">Halaman ini menampilkan daftar dari seluruh data dari tabel Baju yang ada
+                        <p class="card-text">Halaman ini menampilkan daftar dari seluruh data dari tabel Produk yang ada
                         </p>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Create Data
                             <span class="badge badge-success">GET</span>
-                            <span class="badge badge-secondary text-monospace">/baju/create</span>
+                            <span class="badge badge-secondary text-monospace">/produk/create</span>
                         </h5>
-                        <p class="card-text">Halaman ini menampilkan formulir untuk menambahkan data baju </p>
+                        <p class="card-text">Halaman ini menampilkan formulir untuk menambahkan data produk </p>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Store Data
                             <span class="badge badge-warning">POST</span>
-                            <span class="badge badge-secondary text-monospace">/baju/create</span>
+                            <span class="badge badge-secondary text-monospace">/produk/create</span>
                         </h5>
-                        <p class="card-text">Routing ini digunakan untuk menambah data baju dari informasi yang sudah
+                        <p class="card-text">Routing ini digunakan untuk menambah data produk dari informasi yang sudah
                             dimasukkan </p>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Edit Data
                             <span class="badge badge-success">GET</span>
-                            <span class="badge badge-secondary text-monospace">/baju/{id}</span>
+                            <span class="badge badge-secondary text-monospace">/produk/{id}</span>
                         </h5>
-                        <p class="card-text">Halaman ini menampilkan formulir untuk memperbarui data baju dengan id
+                        <p class="card-text">Halaman ini menampilkan formulir untuk memperbarui data produk dengan id
                             tertentu</p>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Update Data
                             <span class="badge badge-warning">POST</span>
-                            <span class="badge badge-secondary text-monospace">/baju/{id}</span>
+                            <span class="badge badge-secondary text-monospace">/produk/{id}</span>
                         </h5>
-                        <p class="card-text">Routing ini digunakan untuk memperbarui informasi dari baju dengan id
+                        <p class="card-text">Routing ini digunakan untuk memperbarui informasi dari produk dengan id
                             tertentu</p>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Delete Data
                             <span class="badge badge-danger">DELETE</span>
-                            <span class="badge badge-secondary text-monospace">/baju/{id}</span>
+                            <span class="badge badge-secondary text-monospace">/produk/{id}</span>
                         </h5>
-                        <p class="card-text">Routing ini digunakan untuk menghapus suatu baju dengan id tertentu dari
+                        <p class="card-text">Routing ini digunakan untuk menghapus suatu produk dengan id tertentu dari
                             database</p>
                     </div>
                 </div>
@@ -196,7 +197,7 @@
                             <span class="badge badge-success">GET</span>
                             <span class="badge badge-secondary text-monospace">/api/public</span>
                         </h5>
-                        <p class="card-text">Mengembalikan Seluruh Data Baju yang ada pada Database
+                        <p class="card-text">Mengembalikan Seluruh Data Produk yang ada pada Database
                         </p>
                     </div>
                     <div class="card-body">
@@ -213,7 +214,7 @@
                             <span class="badge badge-success">GET</span>
                             <span class="badge badge-secondary text-monospace">/api/public/{id}</span>
                         </h5>
-                        <p class="card-text">Mengembalikan Data Baju dengan id tertentu
+                        <p class="card-text">Mengembalikan Data Produk dengan id tertentu
                         </p>
                     </div>
                     <div class="card-body">
@@ -222,7 +223,7 @@
                             <span class="badge badge-secondary text-monospace">/api/public/{id}</span>
                         </h5>
                         <p class="card-text">menggunakan form-data untuk mengirim data (name: String, price: Int, pict:
-                            Image) dan memperbarui data tersebut pada baju dengan id tertentu
+                            Image) dan memperbarui data tersebut pada produk dengan id tertentu
                         </p>
                     </div>
                     <div class="card-body">
@@ -230,7 +231,7 @@
                             <span class="badge badge-danger">DELETE</span>
                             <span class="badge badge-secondary text-monospace">/api/public/{id}</span>
                         </h5>
-                        <p class="card-text">digunakan untuk menghapus suatu data baju dengan id tertentu
+                        <p class="card-text">digunakan untuk menghapus suatu data produk dengan id tertentu
                         </p>
                     </div>
                 </div>
@@ -244,7 +245,7 @@
                             <span class="badge badge-success">GET</span>
                             <span class="badge badge-secondary text-monospace">/api/private</span>
                         </h5>
-                        <p class="card-text">Mengembalikan Seluruh Data Baju yang ada pada Database
+                        <p class="card-text">Mengembalikan Seluruh Data Produk yang ada pada Database
                         </p>
                     </div>
                     <div class="card-body">
@@ -261,7 +262,7 @@
                             <span class="badge badge-success">GET</span>
                             <span class="badge badge-secondary text-monospace">/api/private/{id}</span>
                         </h5>
-                        <p class="card-text">Mengembalikan Data Baju dengan id tertentu
+                        <p class="card-text">Mengembalikan Data Produk dengan id tertentu
                         </p>
                     </div>
                     <div class="card-body">
@@ -270,7 +271,7 @@
                             <span class="badge badge-secondary text-monospace">/api/private/{id}</span>
                         </h5>
                         <p class="card-text">menggunakan form-data untuk mengirim data (name: String, price: Int, pict:
-                            Image) dan memperbarui data tersebut pada baju dengan id tertentu
+                            Image) dan memperbarui data tersebut pada produk dengan id tertentu
                         </p>
                     </div>
                     <div class="card-body">
@@ -278,7 +279,7 @@
                             <span class="badge badge-danger">DELETE</span>
                             <span class="badge badge-secondary text-monospace">/api/private/{id}</span>
                         </h5>
-                        <p class="card-text">digunakan untuk menghapus suatu data baju dengan id tertentu
+                        <p class="card-text">digunakan untuk menghapus suatu data produk dengan id tertentu
                         </p>
                     </div>
                 </div>

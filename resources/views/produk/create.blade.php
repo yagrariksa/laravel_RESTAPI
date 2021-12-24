@@ -1,14 +1,14 @@
 @extends('template')
 
-@section('title', 'Create Baju')
+@section('title', 'Create Produk')
 
 @section('content')
-    <h1>Tambah Baju</h1>
+    <h1>Tambah Produk</h1>
 
-    <form class="mt-4" action="{{ route('baju.store') }}" method="POST" enctype="multipart/form-data">
+    <form class="mt-4" action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="Nama Produk Baju" value="{{ old('name') }}">
+            <input type="text" name="name" class="form-control" placeholder="Nama Produk Produk" value="{{ old('name') }}">
             @error('name')
                 <span class="text-danger">
                     {{ $message }}

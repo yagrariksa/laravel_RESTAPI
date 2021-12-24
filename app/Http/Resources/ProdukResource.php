@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BajuResource extends JsonResource
+class ProdukResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,42 +14,42 @@ class BajuResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [
-            'name'  => $this->name,
-            'price' => $this->price,
-            'pict'  => $this->pict,
-        ];
+        $data = parent::toArray($request);
+
+        $data['pict'] = $data['pict'] ? $data['pict'] : url('assets/image/nothing.png');
+        /*
         if (strpos($request->getRequestUri(), 'public') !== false) {
             $data['url'] = [
                 'details'   => [
                     'type'  => 'GET',
-                    'url'   => route('public.baju.details', $this->id),
+                    'url'   => route('public.produk.details', $this->id),
                 ],
                 'update'   => [
                     'type'  => 'POST',
-                    'url'   => route('public.baju.update', $this->id),
+                    'url'   => route('public.produk.update', $this->id),
                 ],
                 'delete'   => [
                     'type'  => 'DELETE',
-                    'url'   => route('public.baju.delete', $this->id),
+                    'url'   => route('public.produk.delete', $this->id),
                 ],
             ];
         } else {
             $data['url'] = [
                 'details'   => [
                     'type'  => 'GET',
-                    'url'   => route('private.baju.details', $this->id),
+                    'url'   => route('private.produk.details', $this->id),
                 ],
                 'update'   => [
                     'type'  => 'POST',
-                    'url'   => route('private.baju.update', $this->id),
+                    'url'   => route('private.produk.update', $this->id),
                 ],
                 'delete'   => [
                     'type'  => 'DELETE',
-                    'url'   => route('private.baju.delete', $this->id),
+                    'url'   => route('private.produk.delete', $this->id),
                 ],
             ];
         }
+        */
         return $data;
     }
 }

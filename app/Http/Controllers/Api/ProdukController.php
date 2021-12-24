@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BajuResource;
-use App\Models\Baju;
+use App\Http\Resources\ProdukResource;
+use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class BajuController extends Controller
+class ProdukController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,7 @@ class BajuController extends Controller
      */
     public function index()
     {
-        $data = Baju::get();
+        $data = Auth::user()->products;
 
         if (sizeof($data) == 0) {
             return response()->json([
@@ -26,9 +27,9 @@ class BajuController extends Controller
         }
 
         return response()->json([
-            'message'   => 'Success GET all buku data',
+            'message'   => 'Success GET all produk data',
             'size'      => sizeof($data),
-            'data'      => BajuResource::collection($data),
+            'data'      => ProdukResource::collection($data),
         ], 200);
     }
 
@@ -46,9 +47,17 @@ class BajuController extends Controller
             ], 409);
         }
 
-        $data = Baju::create([
+        $extramsg = ' && ';
+        if($request->hasFile('img')){
+            $extramsg .= 'has File';
+        }else{
+            $extramsg .= 'doesn\'t have File';
+        }
+
+        $data = Produk::create([
             'name' => $request->name,
             'price' => $request->price,
+            'user_id' => Auth::user()->id,
         ]);
 
         if ($request->pict) {
@@ -60,8 +69,8 @@ class BajuController extends Controller
         }
 
         return response()->json([
-            'message' => 'Success created data',
-            'data'    => new BajuResource($data),
+            'message' => 'Success created data' . $extramsg,
+            'data'    => new ProdukResource($data),
         ], 201);
     }
 
@@ -73,7 +82,7 @@ class BajuController extends Controller
      */
     public function show($id)
     {
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if (!$data) {
             return response()->json([
@@ -84,7 +93,7 @@ class BajuController extends Controller
 
         return response()->json([
             'message'   => 'success',
-            'data'      => new BajuResource($data),
+            'data'      => new ProdukResource($data),
         ], 200);
     }
 
@@ -97,7 +106,7 @@ class BajuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if (!$data) {
             return response()->json([
@@ -125,7 +134,7 @@ class BajuController extends Controller
 
         return response()->json([
             'message'   => 'Success Update Data',
-            'data'      => new BajuResource($data),
+            'data'      => new ProdukResource($data),
         ], 201);
     }
 
@@ -137,7 +146,7 @@ class BajuController extends Controller
      */
     public function destroy($id)
     {
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if (!$data) {
             return response()->json([

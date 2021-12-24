@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Baju;
+use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class BajuController extends Controller
+class ProdukController extends Controller
 {
     public function index()
     {
-        $data = Baju::get();
-        return view('baju.index', [
-            'bajus' => $data,
+        $data = Produk::where('user_id', Auth::user()->id)->get();
+        // $data = Produk::get();
+        return view('produk.index', [
+            'produks' => $data,
         ]);
     }
 
     public function create()
     {
-        return view('baju.create');
+        return view('produk.create');
     }
 
     public function store(Request $request)
@@ -27,9 +29,10 @@ class BajuController extends Controller
             'price' => 'required'
         ]);
 
-        $data = Baju::create([
+        $data = Produk::create([
             'name' => $request->name,
             'price' => $request->price,
+            'user_id' => Auth::user()->id
         ]);
 
         if ($request->pict) {
@@ -40,19 +43,19 @@ class BajuController extends Controller
             $data->save();
         }
 
-        return redirect()->route('baju.index')->with('success', 'Berhasil menambahkan baju baru');
+        return redirect()->route('produk.index')->with('success', 'Berhasil menambahkan produk baru');
     }
 
     public function edit($id)
     {
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if (!$data) {
-            return redirect()->route('baju.index')->with('error', 'Not Found Baju with id ' . $id);
+            return redirect()->route('produk.index')->with('error', 'Not Found produk with id ' . $id);
         }
 
-        return view('baju.edit', [
-            'baju' => $data,
+        return view('produk.edit', [
+            'produk' => $data,
         ]);
     }
 
@@ -63,10 +66,10 @@ class BajuController extends Controller
             'price' => 'required'
         ]);
         
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if (!$data) {
-            return redirect()->route('baju.index')->with('error', 'Not Found Baju with id ' . $id);
+            return redirect()->route('produk.index')->with('error', 'Not Found produk with id ' . $id);
         }
 
         if ($request->name != $data->name) {
@@ -86,19 +89,19 @@ class BajuController extends Controller
 
         $data->save();
 
-        return redirect()->route('baju.index')->with('success', 'Success update data baju with id ' . $id);
+        return redirect()->route('produk.index')->with('success', 'Success update data produk with id ' . $id);
     }
 
     public function destroy($id)
     {
-        $data = Baju::find($id);
+        $data = Produk::find($id);
 
         if (!$data) {
-            return redirect()->route('baju.index')->with('error', 'Not Found Baju with id ' . $id);
+            return redirect()->route('produk.index')->with('error', 'Not Found produk with id ' . $id);
         }
 
         $data->delete();
 
-        return redirect()->route('baju.index')->with('success', 'Success Delete data baju with id ' . $id);
+        return redirect()->route('produk.index')->with('success', 'Success Delete data produk with id ' . $id);
     }
 }

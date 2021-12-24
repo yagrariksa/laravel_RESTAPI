@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBajusTable extends Migration
+class CreateProduksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateBajusTable extends Migration
      */
     public function up()
     {
-        Schema::create('bajus', function (Blueprint $table) {
+        Schema::create('produks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('price');
             $table->string('pict')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -29,6 +32,6 @@ class CreateBajusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bajus');
+        Schema::dropIfExists('produks');
     }
 }

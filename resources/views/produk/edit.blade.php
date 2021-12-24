@@ -1,15 +1,15 @@
 @extends('template')
 
-@section('title', 'Create Baju')
+@section('title', 'Create Produk')
 
 @section('content')
-    <h1>Update Baju</h1>
+    <h1>Update Produk</h1>
 
-    <form class="mt-4" action="{{ route('baju.update', $baju->id) }}" method="POST" enctype="multipart/form-data">
+    <form class="mt-4" action="{{ route('produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <input class="form-control" type="text" name="name" placeholder="Nama Produk Baju"
-                value="{{ old('name') ? old('name') : $baju->name }}">
+            <input class="form-control" type="text" name="name" placeholder="Nama Produk Produk"
+                value="{{ old('name') ? old('name') : $produk->name }}">
             @error('name')
                 <span class="text-danger">
                     {{ $message }}
@@ -18,7 +18,7 @@
         </div>
         <div class="form-group">
             <input class="form-control" type="number" name="price" placeholder="Harga Produk"
-                value="{{ old('price') ? old('price') : $baju->price }}">
+                value="{{ old('price') ? old('price') : $produk->price }}">
             @error('price')
                 <span class="text-danger">
                     {{ $message }}
@@ -33,8 +33,8 @@
                 </div>
                 <div class="col">
                     <span>foto lama : </span>
-                    @if ($baju->pict)
-                        <img src="{{ $baju->pict }}" alt="" style="width: 200px">
+                    @if ($produk->pict)
+                        <img src="{{ $produk->pict }}" alt="" style="width: 200px">
                     @else
                         <span class="error">Tidak Ada Foto Lama</span>
                     @endif

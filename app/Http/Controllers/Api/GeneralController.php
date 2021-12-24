@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -42,55 +43,55 @@ class GeneralController extends Controller
                 'public' => [
                     'index' => [
                         'type'  => 'GET',
-                        'url'   => route('public.baju.index'),
-                        'desc'  => 'Get All Baju Data'
+                        'url'   => route('public.produk.index'),
+                        'desc'  => 'Get All Produk Data'
                     ],
                     'store' => [
                         'type'  => 'POST',
-                        'url'   => route('public.baju.store'),
-                        'desc'  => 'Store Baju Data (body:: name: String, price: Int, pict: Image)',
+                        'url'   => route('public.produk.store'),
+                        'desc'  => 'Store Produk Data (body:: name: String, price: Int, pict: Image)',
                     ],
                     'details' => [
                         'type'  => 'GET',
-                        'url'   => route('public.baju.details', 'id'),
-                        'desc'  => 'Get Baju Data with spesific id'
+                        'url'   => route('public.produk.details', 'id'),
+                        'desc'  => 'Get Produk Data with spesific id'
                     ],
                     'update' => [
                         'type'  => 'POST',
-                        'url'   => route('public.baju.update', 'id'),
-                        'desc'  => 'Update Baju Data with spesific id'
+                        'url'   => route('public.produk.update', 'id'),
+                        'desc'  => 'Update Produk Data with spesific id'
                     ],
                     'delete' => [
                         'type'  => 'DELETE',
-                        'url'   => route('public.baju.delete', 'id'),
-                        'desc'  => 'Delete Baju Data with spesific id'
+                        'url'   => route('public.produk.delete', 'id'),
+                        'desc'  => 'Delete Produk Data with spesific id'
                     ],
                 ],
                 'private' => [
                     'index' => [
                         'type'  => 'GET',
-                        'url'   => route('private.baju.index'),
-                        'desc'  => 'Get All Baju Data [use Bearer token at Header Authorization]'
+                        'url'   => route('private.produk.index'),
+                        'desc'  => 'Get All Produk Data [use Bearer token at Header Authorization]'
                     ],
                     'store' => [
                         'type'  => 'POST',
-                        'url'   => route('private.baju.store'),
-                        'desc'  => 'Store Baju Data (body:: name: String, price: Int, pict: Image) [use Bearer token at Header Authorization]'
+                        'url'   => route('private.produk.store'),
+                        'desc'  => 'Store Produk Data (body:: name: String, price: Int, pict: Image) [use Bearer token at Header Authorization]'
                     ],
                     'details' => [
                         'type'  => 'GET',
-                        'url'   => route('private.baju.details', 'id'),
-                        'desc'  => 'Get Baju Data with spesific id [use Bearer token at Header Authorization]'
+                        'url'   => route('private.produk.details', 'id'),
+                        'desc'  => 'Get Produk Data with spesific id [use Bearer token at Header Authorization]'
                     ],
                     'update' => [
                         'type'  => 'POST',
-                        'url'   => route('private.baju.update', 'id'),
-                        'desc'  => 'Update Baju Data with spesific id [use Bearer token at Header Authorization]'
+                        'url'   => route('private.produk.update', 'id'),
+                        'desc'  => 'Update Produk Data with spesific id [use Bearer token at Header Authorization]'
                     ],
                     'delete' => [
                         'type'  => 'DELETE',
-                        'url'   => route('private.baju.delete', 'id'),
-                        'desc'  => 'Delete Baju Data with spesific id [use Bearer token at Header Authorization]'
+                        'url'   => route('private.produk.delete', 'id'),
+                        'desc'  => 'Delete Produk Data with spesific id [use Bearer token at Header Authorization]'
                     ],
                 ]
             ]
@@ -119,7 +120,7 @@ class GeneralController extends Controller
             return response()->json([
                 'message'   => 'Success Login',
                 'token'     => $data['api_token'],
-                'user'      => $data
+                'user'      => new UserResource($data)
             ], 200);
         }
 
@@ -130,10 +131,19 @@ class GeneralController extends Controller
 
     public function signup(Request $request)
     {
-        if (!$request->name || !$request->email || !$request->password) {
+        if (
+            !$request->name || !$request->email || !$request->password
+            || !$request->toko || !$request->deskripsi
+        ) {
             return response()->json([
-                'message'   => 'Name, Email, and Password are required'
+                'message'   => 'Name, Email, Toko, Deskripsi and Password are required'
             ], 409);
+        }
+        $extramsg = '';
+        if($request->hasFile('img')){
+            $extramsg .= ' && has file';
+        }else{
+            $extramsg .= ' && doesn\'t have file';
         }
         $check = User::where('email', $request->email)->first();
         if ($check) {
@@ -144,14 +154,41 @@ class GeneralController extends Controller
         $data = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'toko' => $request->toko,
+            'deskripsi' => $request->deskripsi,
+            'img' => '#',
             'password' => Hash::make($request->password),
             'api_token' => Str::random(80),
         ]);
 
+
+
         return response()->json([
-            'message'   => 'Success register new user',
+            'message'   => 'Success register new user' . $extramsg,
             'token'     => $data['api_token'],
-            'user'      => $data
+            'user'      => new UserResource($data)
         ], 200);
+    }
+
+    public function umkm()
+    {
+        $data = User::get();
+        return response()->json([
+            UserResource::collection($data)
+        ]);
+    }
+
+    public function umkmDetails($id)
+    {
+        $data = User::with('products')->find($id);
+        if ($data) {
+            return response()->json([
+                new UserResource($data)
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'not found'
+            ], 404);
+        }
     }
 }
